@@ -18,6 +18,7 @@ class UserExercise < ActiveRecord::Base
   scope :randomized, ->{ order('RANDOM()') }
   scope :unsubmitted, ->{ where(archived: false, iteration_count: 0, skipped_at: nil).where.not(fetched_at: nil) }
   scope :by_activity, ->{ order('last_activity_at DESC') }
+  scope :completed_count, ->{ where.not(iteration_count: 0).group('language').select('language').count }
 
   before_create do
     self.key ||= Exercism.uuid

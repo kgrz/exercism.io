@@ -6,8 +6,9 @@ module ExercismWeb
       get '/languages' do
         tracks = X::Track.all
         active, inactive = tracks.partition { |t| t.active? }
+        completed = current_user.exercises.completed_count
         inactive.sort! { |a, b| b.problems.count <=> a.problems.count }
-        erb :"languages/index", locals: { active: active, inactive: inactive }
+        erb :"languages/index", locals: { active: active, inactive: inactive, completed: completed }
       end
 
       get '/languages/:track_id' do |track_id|
